@@ -10,7 +10,7 @@ using TShockAPI;
 
 namespace TeleportRequest
 {
-	[ApiVersion(1, 16)]
+	[ApiVersion(1, 17)]
 	public class TeleportRequest : TerrariaPlugin
 	{
 		public override string Author
@@ -74,9 +74,9 @@ namespace TeleportRequest
 					}
 					else
 					{
-						string msg = "{0} is requesting to teleport to you. (/tpaccept or /tpdeny)";
+						string msg = "{{0}} is requesting to teleport to you. ({0}tpaccept or {0}tpdeny)".SFormat(Commands.Specifier);
 						if (tpr.dir)
-							msg = "You are requested to teleport to {0}. (/tpaccept or /tpdeny)";
+							msg = "You are requested to teleport to {{0}}. ({0}tpaccept or {0}tpdeny)".SFormat(Commands.Specifier);
 						dst.SendInfoMessage(msg, src.Name);
 					}
 				}
@@ -127,7 +127,7 @@ namespace TeleportRequest
 		{
 			if (e.Parameters.Count == 0)
 			{
-				e.Player.SendErrorMessage("Invalid syntax! Proper syntax: /tpa <player>");
+				e.Player.SendErrorMessage("Invalid syntax! Proper syntax: {0}tpa <player>", Commands.Specifier);
 				return;
 			}
 
@@ -180,7 +180,7 @@ namespace TeleportRequest
 		{
 			if (e.Parameters.Count == 0)
 			{
-				e.Player.SendErrorMessage("Invalid syntax! Proper syntax: /tpahere <player>");
+				e.Player.SendErrorMessage("Invalid syntax! Proper syntax: {0}tpahere <player>", Commands.Specifier);
 				return;
 			}
 
