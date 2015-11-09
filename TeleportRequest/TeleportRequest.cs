@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Timers;
 using Terraria;
@@ -10,7 +8,7 @@ using TShockAPI;
 
 namespace TeleportRequest
 {
-	[ApiVersion(1, 17)]
+	[ApiVersion(1, 22)]
 	public class TeleportRequest : TerrariaPlugin
 	{
 		public override string Author
@@ -74,9 +72,9 @@ namespace TeleportRequest
 					}
 					else
 					{
-						string msg = "{{0}} is requesting to teleport to you. ({0}tpaccept or {0}tpdeny)".SFormat(Commands.Specifier);
+						string msg = String.Format("{{0}} is requesting to teleport to you. ({0}tpaccept or {0}tpdeny)", Commands.Specifier);
 						if (tpr.dir)
-							msg = "You are requested to teleport to {{0}}. ({0}tpaccept or {0}tpdeny)".SFormat(Commands.Specifier);
+							msg = String.Format("You are requested to teleport to {{0}}. ({0}tpaccept or {0}tpdeny)", Commands.Specifier);
 						dst.SendInfoMessage(msg, src.Name);
 					}
 				}
