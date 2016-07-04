@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MarioE")]
 [assembly: AssemblyProduct("TeleportRequest")]
-[assembly: AssemblyCopyright("Copyright © MarioE 2012-2015")]
+[assembly: AssemblyCopyright("Copyright © MarioE 2012-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
