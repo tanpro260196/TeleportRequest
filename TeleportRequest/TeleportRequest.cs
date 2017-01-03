@@ -8,12 +8,12 @@ using TShockAPI;
 
 namespace TeleportRequest
 {
-	[ApiVersion(1, 25)]
+	[ApiVersion(2, 0)]
 	public class TeleportRequest : TerrariaPlugin
 	{
 		public override string Author
 		{
-			get { return "MarioE"; }
+			get { return "MarioE, updated by Ryozuki"; }
 		}
 		public Config Config = new Config();
 		public override string Description
