@@ -1,0 +1,6 @@
+[submodule "tshock-references"]
+	path = tshock-references
+	url = https://github.com/Ryozuki/tshock-references
+[submodule "TeleportRequest/tshock-references"]
+	path = TeleportRequest/tshock-references
+	url = https://github.com/Ryozuki/tshock-references
