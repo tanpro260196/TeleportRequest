@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Timers;
@@ -72,9 +73,9 @@ namespace TeleportRequest
 					}
 					else
 					{
-						string msg = String.Format("{{0}} is requesting to teleport to you. ({0}tpaccept or {0}tpdeny)", Commands.Specifier);
+						string msg = String.Format("{{0}} is requesting to teleport to you. ({0}tpok or {0}tpdeny)", Commands.Specifier);
 						if (tpr.dir)
-							msg = String.Format("You are requested to teleport to {{0}}. ({0}tpaccept or {0}tpdeny)", Commands.Specifier);
+							msg = String.Format("You are requested to teleport to {{0}}. ({0}tpok or {0}tpdeny)", Commands.Specifier);
 						dst.SendInfoMessage(msg, src.Name);
 					}
 				}
@@ -82,7 +83,7 @@ namespace TeleportRequest
 		}
 		void OnInitialize(EventArgs e)
 		{
-			Commands.ChatCommands.Add(new Command("tprequest.accept", TPAccept, "tpaccept")
+			Commands.ChatCommands.Add(new Command("tprequest.ok", TPAccept, "tpok")
 			{
 				AllowServer = false,
 				HelpText = "Accepts a teleport request."
@@ -159,17 +160,17 @@ namespace TeleportRequest
 			for (int i = 0; i < TPRequests.Length; i++)
 			{
 				TPRequest tpr = TPRequests[i];
-				if (tpr.timeout > 0 && tpr.dst == e.Player.Index)
+                if (tpr.timeout > 0 && tpr.dst == e.Player.Index)
 				{
 					TSPlayer plr1 = tpr.dir ? e.Player : TShock.Players[i];
 					TSPlayer plr2 = tpr.dir ? TShock.Players[i] : e.Player;
-					if (plr1.Teleport(plr2.X, plr2.Y))
+                    if (plr1.Teleport(plr2.X, plr2.Y))
 					{
 						plr1.SendSuccessMessage("Teleported to {0}.", plr2.Name);
 						plr2.SendSuccessMessage("{0} teleported to you.", plr1.Name);
 					}
 					tpr.timeout = 0;
-					return;
+                    return;
 				}
 			}
 			e.Player.SendErrorMessage("You have no pending teleport requests.");
@@ -210,7 +211,7 @@ namespace TeleportRequest
 		void TPAutoDeny(CommandArgs e)
 		{
 			TPAllows[e.Player.Index] = !TPAllows[e.Player.Index];
-			e.Player.SendInfoMessage("{0}abled TP override denial.", TPAllows[e.Player.Index] ? "En" : "Dis");
+			e.Player.SendInfoMessage("{0}abled Teleport Auto-deny.", TPAllows[e.Player.Index] ? "En" : "Dis");
 		}
 		void TPDeny(CommandArgs e)
 		{
