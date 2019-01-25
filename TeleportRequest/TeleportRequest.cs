@@ -131,7 +131,7 @@ namespace TeleportRequest
 			}
 
 			string plrName = String.Join(" ", e.Parameters.ToArray());
-			var players = TShock.Utils.FindPlayer(plrName);
+			var players = TSPlayer.FindByNameOrID(plrName);
 			if (players.Count == 0)
 				e.Player.SendErrorMessage("Invalid player!");
 			else if (players.Count > 1)
@@ -184,7 +184,7 @@ namespace TeleportRequest
 			}
 
 			string plrName = String.Join(" ", e.Parameters.ToArray());
-			var players = TShock.Utils.FindPlayer(plrName);
+			var players = TSPlayer.FindByNameOrID(plrName);
 			if (players.Count == 0)
 				e.Player.SendErrorMessage("Invalid player!");
 			else if (players.Count > 1)
