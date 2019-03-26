@@ -5,9 +5,9 @@ namespace TeleportRequest
 {
 	public class Config
 	{
-		public int Interval = 3;
-		public int Timeout = 3;
-
+		public int Interval = 1;
+		public int Timeout = 30;
+        public int waittime = 10;
 		public void Write(string path)
 		{
 			using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Write))
