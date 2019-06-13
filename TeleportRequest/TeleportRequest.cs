@@ -85,12 +85,12 @@ namespace TeleportRequest
                         {
                             if (tpr.dir)
                             {
-                                dst.SendMessage("[Teleport Request] You will be teleported to " + src.Name.Colorize(Color.Yellow) + " in " + (Config.waittime - (Config.Timeout - tpr.timeout)) + ". Turn off auto-accept to withdraw your consent.", Color.LightBlue);
+                                dst.SendMessage("[Teleport Request] You will be teleported to " + src.Name.Colorize(Color.Yellow) + " in " + (Config.waittime - (Config.Timeout - tpr.timeout)).ToString().Colorize(Color.Yellow) + ". Turn off auto-accept to withdraw your consent.", Color.LightBlue);
                             }
                             else
                             {
-                                src.SendMessage("[Teleport Request] Teleportation will begin in " + (Config.waittime - (Config.Timeout - tpr.timeout)), Color.LightBlue);
-                                dst.SendMessage("[Teleport Request] Player " + src.Name.Colorize(Color.Yellow) + " will teleported to you in " + (Config.waittime - (Config.Timeout - tpr.timeout)) + ". Turn off auto-accept to withdraw your consent.", Color.LightBlue);
+                                src.SendMessage("[Teleport Request] Teleportation will begin in " + (Config.waittime - (Config.Timeout - tpr.timeout)).ToString().Colorize(Color.Yellow), Color.LightBlue);
+                                dst.SendMessage("[Teleport Request] Player " + src.Name.Colorize(Color.Yellow) + " will teleported to you in " + (Config.waittime - (Config.Timeout - tpr.timeout)).ToString().Colorize(Color.Yellow) + ". Turn off auto-accept to withdraw your consent.", Color.LightBlue);
                             }
                             continue;
                         }
@@ -113,7 +113,7 @@ namespace TeleportRequest
 		}
 		void OnInitialize(EventArgs e)
 		{
-			Commands.ChatCommands.Add(new Command("tprequest.use", TPA, "tpr")
+			Commands.ChatCommands.Add(new Command("tprequest.use", TPA, "tpr", "tpa")
 			{
 				AllowServer = false,
 				HelpText = "Sends a request to teleport to someone."
@@ -174,14 +174,14 @@ namespace TeleportRequest
                         return;
                     }
                 }
-                e.Player.SendInfoMessage("[Teleport Request] You have no pending teleport requests.");
+                e.Player.SendMessage("[Teleport Request] You have no pending teleport requests.", Color.LightCoral);
                 return;
             }
             if ((e.Parameters[0] == "no") || (e.Parameters[0] == "n") || (e.Parameters[0] == "No"))
             {
                 if (!e.Player.HasPermission("tprequest.no"))
                 {
-                    e.Player.SendInfoMessage("[Teleport Request] You don't have permission to use this command.", Commands.Specifier);
+                    e.Player.SendMessage("[Teleport Request] You don't have permission to use this command.", Color.LightCoral);
                     return;
                 }
                 for (int i = 0; i < TPRequests.Length; i++)
@@ -195,7 +195,7 @@ namespace TeleportRequest
                         return;
                     }
                 }
-                e.Player.SendInfoMessage("[Teleport Request] You have no pending teleport requests.");
+                e.Player.SendMessage("[Teleport Request] You have no pending teleport requests.", Color.LightCoral);
                 return;
             }
             if ((e.Parameters[0] == "here") || (e.Parameters[0] == "Here") || (e.Parameters[0] == "HERE"))
@@ -207,18 +207,18 @@ namespace TeleportRequest
                 }
                 if (!e.Player.HasPermission("tprequest.here"))
                 {
-                    e.Player.SendErrorMessage("[Teleport Request] You don't have permission to use this command.", Commands.Specifier);
+                    e.Player.SendMessage("[Teleport Request] You don't have permission to use this command.", Color.LightCoral);
                     return;
                 }
                 string plrNamehere = String.Join(" ", e.Parameters.ToArray());
                 plrNamehere = plrNamehere.Remove(0, 5);
                 var playersherelist = TShock.Utils.FindPlayer(plrNamehere);
                 if (playersherelist.Count == 0)
-                    e.Player.SendErrorMessage("Invalid player!");
+                    e.Player.SendMessage("[Teleport Request] Invalid player!", Color.LightCoral);
                 else if (playersherelist.Count > 1)
-                    e.Player.SendErrorMessage("More than one player matched!");
+                    e.Player.SendMessage("[Teleport Request] More than one player matched!", Color.LightCoral);
                 else if ((!playersherelist[0].TPAllow || TPAllows[playersherelist[0].Index]) && !e.Player.Group.HasPermission(Permissions.tpoverride))
-                    e.Player.SendInfoMessage("[Teleport Request] You cannot teleport {0}.", playersherelist[0].Name);
+                    e.Player.SendMessage("[Teleport Request] You cannot teleport " + playersherelist[0].Name.Colorize(Color.Yellow) + ".", Color.LightCoral);
                 else
                 {
                     for (int i = 0; i < TPRequests.Length; i++)
@@ -226,7 +226,7 @@ namespace TeleportRequest
                         TPRequest tpr = TPRequests[i];
                         if (tpr.timeout > 0 && tpr.dst == playersherelist[0].Index)
                         {
-                            e.Player.SendInfoMessage("[Teleport Request] {0} already has a teleport request.", playersherelist[0].Name);
+                            e.Player.SendMessage("[Teleport Request] "+ playersherelist[0].Name.Colorize(Color.Yellow) + " already has a teleport request.", Color.LightCoral);
                             return;
                         }
                     }
@@ -236,7 +236,7 @@ namespace TeleportRequest
                         {
                             if ((npc.target == playersherelist[0].TPlayer.whoAmI) && npc.boss && npc.active)
                             {
-                                e.Player.SendMessage("[Teleport Request] You're being target by a Boss. Request failed.", Color.LightBlue);
+                                e.Player.SendMessage("[Teleport Request] You're being target by a Boss. Request failed.", Color.LightCoral);
                                 return;
                             }
                         }
@@ -246,7 +246,7 @@ namespace TeleportRequest
                     TPRequests[e.Player.Index].timeout = Config.Timeout + 1;
                     e.Player.SendMessage("[Teleport Request]" + " Sent a teleport request to " + playersherelist[0].Name.Colorize(Color.Yellow) + ".", Color.LightCyan);
                     if (AutoAccept[playersherelist[0].TPlayer.whoAmI])
-                        e.Player.SendMessage("[Teleport Request]" + " Since " + playersherelist[0].Name.Colorize(Color.Yellow) + " has auto-accept turned on. Request is accepted.", Color.LightCyan);
+                        e.Player.SendMessage("[Teleport Request] Since " + playersherelist[0].Name.Colorize(Color.Yellow) + " has auto-accept turned on. Request is accepted.", Color.LightCyan);
                 }
                 return;
             }
@@ -254,7 +254,7 @@ namespace TeleportRequest
             {
                 if (!e.Player.HasPermission("tprequest.autono"))
                 {
-                    e.Player.SendInfoMessage("[Teleport Request] You don't have permission to use this command.", Commands.Specifier);
+                    e.Player.SendMessage("[Teleport Request] You don't have permission to use this command.", Color.LightCoral);
                     return;
                 }
                 TPAllows[e.Player.Index] = !TPAllows[e.Player.Index];
@@ -264,9 +264,9 @@ namespace TeleportRequest
             }
             if ((e.Parameters[0] == "autoyes") || (e.Parameters[0] == "Autoyes") || (e.Parameters[0] == "ay"))
             {
-                if (!e.Player.HasPermission("tprequest.autono"))
+                if (!e.Player.HasPermission("tprequest.autoyes"))
                 {
-                    e.Player.SendInfoMessage("[Teleport Request] You don't have permission to use this command.", Commands.Specifier);
+                    e.Player.SendMessage("[Teleport Request] You don't have permission to use this command.", Color.LightCoral);
                     return;
                 }
                 AutoAccept[e.Player.Index] = !AutoAccept[e.Player.Index];
@@ -278,11 +278,11 @@ namespace TeleportRequest
             string plrName = String.Join(" ", e.Parameters.ToArray());
             var players = TShock.Utils.FindPlayer(plrName);
             if (players.Count == 0)
-                e.Player.SendErrorMessage("Invalid player!");
+                e.Player.SendMessage("[Teleport Request] Invalid player!", Color.LightCoral);
             else if (players.Count > 1)
-                e.Player.SendErrorMessage("More than one player matched!");
+                e.Player.SendMessage("[Teleport Request] More than one player matched!", Color.LightCoral);
             else if ((!players[0].TPAllow || TPAllows[players[0].Index]) && !e.Player.Group.HasPermission(Permissions.tpoverride))
-                e.Player.SendInfoMessage("[Teleport Request] You cannot teleport to {0}.", players[0].Name);
+                e.Player.SendMessage("[Teleport Request] You cannot teleport to "+ players[0].Name.Colorize(Color.Yellow) + ".", Color.LightCoral);
             else
             {
                 for (int i = 0; i < TPRequests.Length; i++)
@@ -290,7 +290,7 @@ namespace TeleportRequest
                     TPRequest tpr = TPRequests[i];
                     if (tpr.timeout > 0 && tpr.dst == players[0].Index)
                     {
-                        e.Player.SendInfoMessage("[Teleport Request] {0} already has a teleport request.", players[0].Name);
+                        e.Player.SendMessage("[Teleport Request] " + players[0].Name.Colorize(Color.Yellow) + " already has a teleport request.", Color.LightCoral);
                         return;
                     }
                 }
@@ -300,7 +300,7 @@ namespace TeleportRequest
                     {
                         if ((npc.target == players[0].TPlayer.whoAmI) && npc.boss && npc.active)
                         {
-                            e.Player.SendMessage("[Teleport Request] Player " + players[0].Name.Colorize(Color.Yellow) + " is being target by a Boss. Request failed.", Color.LightBlue);
+                            e.Player.SendMessage("[Teleport Request] Player " + players[0].Name.Colorize(Color.Yellow) + " is being target by a Boss. Request failed.", Color.LightCoral);
                             return;
                         }
                     }
