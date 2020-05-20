@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Timers;
 using Terraria;
@@ -212,7 +214,7 @@ namespace TeleportRequest
                 }
                 string plrNamehere = String.Join(" ", e.Parameters.ToArray());
                 plrNamehere = plrNamehere.Remove(0, 5);
-                var playersherelist = TShock.Utils.FindPlayer(plrNamehere);
+                var playersherelist = TShock.Players.FindPlayers(plrNamehere);
                 if (playersherelist.Count == 0)
                     e.Player.SendMessage("[Teleport Request] Invalid player!", Color.LightCoral);
                 else if (playersherelist.Count > 1)
@@ -276,7 +278,7 @@ namespace TeleportRequest
             }
             #region tp
             string plrName = String.Join(" ", e.Parameters.ToArray());
-            var players = TShock.Utils.FindPlayer(plrName);
+            var players = TShock.Players.FindPlayers(plrName);
             if (players.Count == 0)
                 e.Player.SendMessage("[Teleport Request] Invalid player!", Color.LightCoral);
             else if (players.Count > 1)
